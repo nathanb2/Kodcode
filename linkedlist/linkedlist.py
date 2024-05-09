@@ -1,6 +1,6 @@
 from typing import Type
 
-from node import Node
+from linkedlist.node import Node
 
 
 class LinkedList:
@@ -8,41 +8,66 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
-    def append(self, data) -> Node:
-        new_node = Node(data)
-
-        if self.head == None:
-            self.head = new_node
-        else:
-            current_node = self.head
-            while current_node != None:
-                if current_node.next == None:
-                    current_node.next = new_node
-                    break
-                current_node = current_node.next
-
-        return new_node
-
-    def pop(self) -> Node:
-        to_return = None
-        if self.head == None:
-            return None
-        elif self.head.next == None:
-            to_return = self.head
-            self.head = None
-        else:
-            current_node = self.head
-            while current_node.next:
-                if not current_node.next.next:
-                    to_return = current_node.next
-                    current_node.next = None
-                current_node = current_node.next
-        return to_return
 
     def push(self, data) -> Node:
         new_node = Node(data)
         new_node.next = self.head
         self.head = new_node
+
+    def pop_head(self) -> Node:
+
+        if(not self.head):
+            return None
+
+        head = self.head
+        self.head = self.head.next
+        return head
+
+    def peek_head(self) -> Node:
+        return self.head
+
+    def append(self, data: any) -> Node:
+
+        # create new node with inputed data
+        new_node = Node(data)
+
+        # if linkedList is empty new_node will be the head
+        if not self.head:
+            self.head = new_node
+            return new_node
+
+        current_node = self.head
+
+        while current_node:
+
+            if not current_node.next:
+                current_node.next = new_node
+                return new_node
+            else:
+                current_node = current_node.next
+
+
+    def pop(self) -> Node:
+
+        if not self.head:
+            return None
+        elif not self.head.next:
+            current_node = self.head
+            self.head = None
+            return current_node
+
+        previous_node = self.head
+        current_node = self.head.next
+
+        while current_node:
+
+            if not current_node.next:
+                previous_node.next = None
+                return current_node
+            else:
+                previous_node = current_node
+                current_node = current_node.next
+
 
     def remove(self, data):
         if self.head == None:
@@ -60,6 +85,7 @@ class LinkedList:
                 current = None
             previous = current
             current = current.next
+
 
     def reverse(self) -> Type['LinkedList']:
         prev = None
